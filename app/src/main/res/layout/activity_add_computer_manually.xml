@@ -32,7 +32,8 @@
         android:singleLine="true"
         android:preferKeepClear="true"
         android:inputType="textNoSuggestions"
-        android:hint="@string/ip_hint" >
+        android:hint="@string/ip_hint"
+        android:backgroundTint="@color/lavender">
         
         <requestFocus />
     </EditText>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import com.limelight.utils.MoonlightToast;
 
 import com.limelight.LimeLog;
 import com.limelight.R;
@@ -86,7 +87,7 @@ public class VirtualController {
                     message = "Exiting configuration mode";
                 }
 
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                MoonlightToast.makeText(context, message, Toast.LENGTH_SHORT).show();
 
                 buttonConfigure.invalidate();
 

@@ -51,6 +51,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.hardware.input.InputManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -77,6 +78,7 @@ import android.widget.FrameLayout;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.limelight.utils.MoonlightToast;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -107,6 +109,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private static final int STYLUS_UP_DEAD_ZONE_RADIUS = 50;
 
     private static final int THREE_FINGER_TAP_THRESHOLD = 300;
+    private static final int THREE_FINGER_LONGTAP_THRESHOLD = 3000;
 
     private ControllerHandler controllerHandler;
     private KeyboardTranslator keyboardTranslator;
@@ -150,6 +153,8 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
     private WifiManager.WifiLock highPerfWifiLock;
     private WifiManager.WifiLock lowLatencyWifiLock;
+
+    private boolean enable3dMode = false;
 
     private boolean connectedToUsbDriverService = false;
     private ServiceConnection usbDriverServiceConnection = new ServiceConnection() {
@@ -370,11 +375,11 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
                 if (!willStreamHdr) {
                     // Nope, no HDR for us :(
-                    Toast.makeText(this, "Display does not support HDR10", Toast.LENGTH_LONG).show();
+                    MoonlightToast.makeText(this, "Display does not support HDR10", Toast.LENGTH_LONG).show();
                 }
             }
             else {
-                Toast.makeText(this, "HDR requires Android 7.0 or later", Toast.LENGTH_LONG).show();
+                MoonlightToast.makeText(this, "HDR requires Android 7.0 or later", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -406,12 +411,12 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         // Don't stream HDR if the decoder can't support it
         if (willStreamHdr && !decoderRenderer.isHevcMain10Hdr10Supported()) {
             willStreamHdr = false;
-            Toast.makeText(this, "Decoder does not support HEVC Main10HDR10", Toast.LENGTH_LONG).show();
+            MoonlightToast.makeText(this, "Decoder does not support HEVC Main10HDR10", Toast.LENGTH_LONG).show();
         }
 
         // Display a message to the user if HEVC was forced on but we still didn't find a decoder
         if (prefConfig.videoFormat == PreferenceConfiguration.FORCE_H265_ON && !decoderRenderer.isHevcSupported()) {
-            Toast.makeText(this, "No HEVC decoder found.\nFalling back to H.264.", Toast.LENGTH_LONG).show();
+            MoonlightToast.makeText(this, "No HEVC decoder found.\nFalling back to H.264.", Toast.LENGTH_LONG).show();
         }
 
         int gamepadMask = ControllerHandler.getAttachedControllerMask(this);
@@ -530,6 +535,22 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                     "This device or ROM doesn't support hardware accelerated H.264 playback.", true);
             return;
         }
+
+        enable3dMode = true;
+        update3dMode(!enable3dMode, false);
+
+        streamView.setSurfaceListener(surface -> {
+            if (!attemptedConnection) {
+                attemptedConnection = true;
+
+                // Update GameManager state to indicate we're "loading" while connecting
+                UiHelper.notifyStreamConnecting(Game.this);
+
+                decoderRenderer.setRenderTarget(surface);
+                conn.start(new AndroidAudioRenderer(Game.this, prefConfig.enableAudioFx),
+                        decoderRenderer, Game.this);
+            }
+        });
 
         // The connection will be started when the surface gets created
         streamView.getHolder().addCallback(this);
@@ -756,6 +777,13 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         // With Android native pointer capture, capture is lost when focus is lost,
         // so it must be requested again when focus is regained.
         inputCaptureProvider.onWindowFocusChanged(hasFocus);
+
+        update3dMode(enable3dMode, hasFocus);
+    }
+
+    private void update3dMode(boolean enable, boolean hasFocus) {
+        enable3dMode = enable;
+        LeiaHelper.update3dMode(streamView, enable, hasFocus);
     }
 
     private boolean isRefreshRateEqualMatch(float refreshRate) {
@@ -1130,7 +1158,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                 }
 
                 if (message != null) {
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                    MoonlightToast.makeText(this, message, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -1710,6 +1738,9 @@ public class Game extends Activity implements SurfaceHolder.Callback,
                             // This is a 3 finger tap to bring up the keyboard
                             toggleKeyboard();
                             return true;
+                        } else if (event.getEventTime() - threeFingerDownTime < THREE_FINGER_LONGTAP_THRESHOLD) {
+                            update3dMode(!enable3dMode, hasWindowFocus());
+                            return true;
                         }
                     }
 
@@ -1916,7 +1947,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
                     // If video initialization failed and the surface is still valid, display extra information for the user
                     if (stage.contains("video") && streamView.getHolder().getSurface().isValid()) {
-                        Toast.makeText(Game.this, getResources().getText(R.string.video_decoder_init_failed), Toast.LENGTH_LONG).show();
+                        MoonlightToast.makeText(Game.this, getResources().getText(R.string.video_decoder_init_failed), Toast.LENGTH_LONG).show();
                     }
 
                     String dialogText = getResources().getString(R.string.conn_error_msg) + " " + stage +" (error "+errorCode+")";
@@ -2080,7 +2111,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(Game.this, message, Toast.LENGTH_LONG).show();
+                MoonlightToast.makeText(Game.this, message, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -2091,7 +2122,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(Game.this, message, Toast.LENGTH_LONG).show();
+                    MoonlightToast.makeText(Game.this, message, Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -2114,17 +2145,6 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         if (!surfaceCreated) {
             throw new IllegalStateException("Surface changed before creation!");
-        }
-
-        if (!attemptedConnection) {
-            attemptedConnection = true;
-
-            // Update GameManager state to indicate we're "loading" while connecting
-            UiHelper.notifyStreamConnecting(Game.this);
-
-            decoderRenderer.setRenderTarget(holder);
-            conn.start(new AndroidAudioRenderer(Game.this, prefConfig.enableAudioFx),
-                    decoderRenderer, Game.this);
         }
     }
 

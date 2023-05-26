@@ -21,6 +21,7 @@ import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Toast;
+import com.limelight.utils.MoonlightToast;
 
 import com.limelight.LimeLog;
 import com.limelight.binding.input.driver.AbstractController;
@@ -1914,7 +1915,7 @@ public class ControllerHandler implements InputManager.InputDeviceListener, UsbD
         public void toggleMouseEmulation() {
             handler.removeCallbacks(mouseEmulationRunnable);
             mouseEmulationActive = !mouseEmulationActive;
-            Toast.makeText(activityContext, "Mouse emulation is: " + (mouseEmulationActive ? "ON" : "OFF"), Toast.LENGTH_SHORT).show();
+            MoonlightToast.makeText(activityContext, "Mouse emulation is: " + (mouseEmulationActive ? "ON" : "OFF"), Toast.LENGTH_SHORT).show();
 
             if (mouseEmulationActive) {
                 handler.postDelayed(mouseEmulationRunnable, mouseEmulationReportPeriod);

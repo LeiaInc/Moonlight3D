@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#ff000000</color>
+    <color name="window_background">#0C0C18</color>
+    <color name="white">#ffffff</color>
+    <color name="lavender">#E0C2FF</color>
+    <color name="bg_3">#171726</color>
+    <color name="bg_4">#1E1E2F</color>
+    <color name="bg_7">#323243</color>
+    <color name="antialias_toast_background_color">@color/bg_7</color>
+</resources>

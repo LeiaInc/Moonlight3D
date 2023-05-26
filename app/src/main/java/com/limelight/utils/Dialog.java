@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.widget.Button;
 
 import com.limelight.R;
@@ -107,7 +109,14 @@ public class Dialog implements Runnable {
         synchronized (rundownDialogs) {
             rundownDialogs.add(this);
             alert.show();
+
+            setCustomStyle(activity, alert);
         }
     }
 
+    public static void setCustomStyle(Context context, AlertDialog alert) {
+        Button neutralButton = alert.getButton(AlertDialog.BUTTON_NEUTRAL);
+        neutralButton.setTextColor(context.getResources().getColor(R.color.lavender));
+        alert.getWindow().setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.bg_4)));
+    }
 }

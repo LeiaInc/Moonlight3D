@@ -6,7 +6,9 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 
-public class StreamView extends SurfaceView {
+import com.limelight.LeiaHelper;
+
+public class StreamView extends LeiaHelper.StreamView {
     private double desiredAspectRatio;
     private InputCallbacks inputCallbacks;
 
@@ -26,14 +28,14 @@ public class StreamView extends SurfaceView {
         super(context, attrs);
     }
 
-    public StreamView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+//    public StreamView(Context context, AttributeSet attrs, int defStyleAttr) {
+//        super(context, attrs, defStyleAttr);
+//    }
 
-    @TargetApi(21)
-    public StreamView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+//    @TargetApi(21)
+//    public StreamView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

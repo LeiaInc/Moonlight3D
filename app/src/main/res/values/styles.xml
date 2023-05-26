@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -20,6 +20,19 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:fontFamily">@font/campton_book</item>
+        <item name="android:buttonStyle">@style/Button</item>
+        <item name="android:indeterminateTint">@color/lavender</item>
+        <item name="android:dropDownListViewStyle">@style/AppTheme.DropDownList</item>
+        <item name="android:textAppearancePopupMenuHeader">@style/ContextMenuHeaderAppearance</item>
+        <item name="android:colorAccent">@color/lavender</item>
+    </style>
+    <style name="AppTheme.DropDownList" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:background">@color/bg_3</item>
+    </style>
+    <style name="ContextMenuHeaderAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/lavender</item>
     </style>
 
     <style name="StreamBaseTheme" parent="AppBaseTheme">
@@ -32,6 +45,11 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:backgroundTint">@color/bg_7</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

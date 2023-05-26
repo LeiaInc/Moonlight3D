@@ -3,6 +3,7 @@ package com.limelight.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
+import com.limelight.utils.MoonlightToast;
 
 import com.limelight.AppView;
 import com.limelight.Game;
@@ -77,7 +78,7 @@ public class ServerHelper {
     public static void doStart(Activity parent, NvApp app, ComputerDetails computer,
                                ComputerManagerService.ComputerManagerBinder managerBinder) {
         if (computer.state == ComputerDetails.State.OFFLINE || computer.activeAddress == null) {
-            Toast.makeText(parent, parent.getResources().getString(R.string.pair_pc_offline), Toast.LENGTH_SHORT).show();
+            MoonlightToast.makeText(parent, parent.getResources().getString(R.string.pair_pc_offline), Toast.LENGTH_SHORT).show();
             return;
         }
         parent.startActivity(createStartIntent(parent, app, computer, managerBinder));
@@ -120,7 +121,7 @@ public class ServerHelper {
                               final NvApp app,
                               final ComputerManagerService.ComputerManagerBinder managerBinder,
                               final Runnable onComplete) {
-        Toast.makeText(parent, parent.getResources().getString(R.string.applist_quit_app) + " " + app.getAppName() + "...", Toast.LENGTH_SHORT).show();
+        MoonlightToast.makeText(parent, parent.getResources().getString(R.string.applist_quit_app) + " " + app.getAppName() + "...", Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -160,7 +161,7 @@ public class ServerHelper {
                 parent.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(parent, toastMessage, Toast.LENGTH_LONG).show();
+                        MoonlightToast.makeText(parent, toastMessage, Toast.LENGTH_LONG).show();
                     }
                 });
             }

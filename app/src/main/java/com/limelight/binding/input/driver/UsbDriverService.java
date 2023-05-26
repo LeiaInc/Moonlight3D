@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.view.InputDevice;
 import android.widget.Toast;
+import com.limelight.utils.MoonlightToast;
 
 import com.limelight.LimeLog;
 import com.limelight.R;
@@ -160,7 +161,7 @@ public class UsbDriverService extends Service implements UsbDriverListener {
                     // the whole app. :(
                     usbManager.requestPermission(device, PendingIntent.getBroadcast(UsbDriverService.this, 0, new Intent(ACTION_USB_PERMISSION), intentFlags));
                 } catch (SecurityException e) {
-                    Toast.makeText(this, this.getText(R.string.error_usb_prohibited), Toast.LENGTH_LONG).show();
+                    MoonlightToast.makeText(this, this.getText(R.string.error_usb_prohibited), Toast.LENGTH_LONG).show();
                     if (stateListener != null) {
                         stateListener.onUsbPermissionPromptCompleted();
                     }

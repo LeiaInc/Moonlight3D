@@ -7,6 +7,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.drawable.ColorDrawable;
+
+import com.limelight.R;
 
 public class SpinnerDialog implements Runnable,OnCancelListener {
     private final String title;
@@ -76,6 +79,8 @@ public class SpinnerDialog implements Runnable,OnCancelListener {
         if (progress == null)
         {
             progress = new ProgressDialog(activity);
+
+            progress.getWindow().setBackgroundDrawable(new ColorDrawable(activity.getResources().getColor(R.color.bg_4)));
 
             progress.setTitle(title);
             progress.setMessage(message);

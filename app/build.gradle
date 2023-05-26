@@ -8,7 +8,7 @@ android {
     namespace 'com.limelight'
 
     defaultConfig {
-        minSdk 16
+        minSdk 30
         targetSdk 33
 
         versionName "11.0"
@@ -50,6 +50,12 @@ android {
         }
     }
 
+    if (rootProject.build3D) {
+        sourceSets.main.java.srcDir 'src/3d'
+    } else {
+        sourceSets.main.java.srcDir 'src/2d'
+    }
+
     compileOptions {
         encoding "UTF-8"
         sourceCompatibility JavaVersion.VERSION_11
@@ -78,8 +84,8 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            resValue "string", "app_label", "Moonlight (Debug)"
-            resValue "string", "app_label_root", "Moonlight (Root Debug)"
+            resValue "string", "app_label", "${rootProject.appName} (Debug)"
+            resValue "string", "app_label_root", "${rootProject.appName} (Root Debug)"
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -115,9 +121,9 @@ android {
             // is to please change the applicationId before you publish.
             //
             // TL;DR: Leave the following line alone!
-            applicationIdSuffix ".unofficial"
-            resValue "string", "app_label", "Moonlight"
-            resValue "string", "app_label_root", "Moonlight (Root)"
+            applicationIdSuffix ".leia"
+            resValue "string", "app_label", "${rootProject.appName}"
+            resValue "string", "app_label_root", "${rootProject.appName} (Root)"
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -140,4 +146,9 @@ dependencies {
     // 3.5.8 requires minSdk 19, uses StandardCharsets.UTF_8 internally
     implementation 'org.jmdns:jmdns:3.5.7'
     implementation 'com.github.cgutman:ShieldControllerExtensions:1.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+
+    if (rootProject.build3D) {
+        implementation(group: 'com.leia.cnsdk', name: 'sdk-faceTrackingService', version: '0.6.200', ext: 'aar')
+    }
 }

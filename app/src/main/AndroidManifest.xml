@@ -32,6 +32,7 @@
         android:required="false"/>
 
     <application
+        android:name=".MainApp"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/backup_rules_s"
@@ -40,7 +41,6 @@
         android:banner="@drawable/atv_banner"
         android:appCategory="game"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
         android:installLocation="auto"
         android:gwpAsanMode="always"
         android:localeConfig="@xml/locales_config"

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.widget.Toast;
+import com.limelight.utils.MoonlightToast;
 
 import com.limelight.R;
 
@@ -34,7 +35,7 @@ public class ConfirmDeleteOscPreference extends DialogPreference {
     public void onClick(DialogInterface dialog, int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
             getContext().getSharedPreferences(OSC_PREFERENCE, Context.MODE_PRIVATE).edit().clear().apply();
-            Toast.makeText(getContext(), R.string.toast_reset_osc_success, Toast.LENGTH_SHORT).show();
+            MoonlightToast.makeText(getContext(), R.string.toast_reset_osc_success, Toast.LENGTH_SHORT).show();
         }
     }
 }

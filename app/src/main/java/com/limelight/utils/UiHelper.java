@@ -16,6 +16,7 @@ import android.os.LocaleList;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.limelight.Game;
 import com.limelight.R;
@@ -225,10 +226,11 @@ public class UiHelper {
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(parent);
-        builder.setMessage(parent.getResources().getString(R.string.applist_quit_confirmation))
+        AlertDialog alertDialog = builder.setMessage(parent.getResources().getString(R.string.applist_quit_confirmation))
                 .setPositiveButton(parent.getResources().getString(R.string.yes), dialogClickListener)
                 .setNegativeButton(parent.getResources().getString(R.string.no), dialogClickListener)
                 .show();
+        Dialog.setCustomStyle(parent, alertDialog);
     }
 
     public static void displayDeletePcConfirmationDialog(Activity parent, ComputerDetails computer, final Runnable onYes, final Runnable onNo) {
@@ -252,10 +254,13 @@ public class UiHelper {
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(parent);
-        builder.setMessage(parent.getResources().getString(R.string.delete_pc_msg))
+        AlertDialog alertDialog = builder.setMessage(parent.getResources().getString(R.string.delete_pc_msg))
                 .setTitle(computer.name)
                 .setPositiveButton(parent.getResources().getString(R.string.yes), dialogClickListener)
                 .setNegativeButton(parent.getResources().getString(R.string.no), dialogClickListener)
                 .show();
+        Dialog.setCustomStyle(parent, alertDialog);
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(parent.getResources().getColor(R.color.lavender));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(parent.getResources().getColor(R.color.lavender));
     }
 }

@@ -26,3 +26,9 @@
 # jMDNS
 -dontwarn javax.jmdns.impl.DNSCache
 -dontwarn org.slf4j.**
+
+# CNSDK
+-keep class com.leia.sdk.** { *; }
+-keep class com.leia.core.** { *; }
+-keep class com.leia.internal.** { *; }
+-keep class com.leia.headtracking.** { *; }

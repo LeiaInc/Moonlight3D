@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.limelight.utils.Dialog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -219,6 +221,8 @@ public abstract class VirtualControllerElement extends View {
         AlertDialog alert = alertBuilder.create();
         // show menu
         alert.show();
+
+        Dialog.setCustomStyle(getContext(), alert);
     }
 
     @Override

@@ -9,10 +9,31 @@ buildscript {
     }
 }
 
+def Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+project.ext {
+    build3D = properties.getProperty("leiainc.jfrog.username", "") != "" &&
+              properties.getProperty("leiainc.jfrog.password", "") != "";
+    println "Building 3D variant: ${build3D}"
+
+    appName = build3D ? "Moonlight3D" : "Moonlight"
+}
+
 allprojects {
     repositories {
         mavenCentral()
         google()
         maven { url 'https://jitpack.io' }
+        if (rootProject.build3D) {
+            maven {
+                url 'https://leiainc.jfrog.io/leiainc/gradle-dev'
+
+                credentials {
+                    username properties.getProperty("leiainc.jfrog.username", "")
+                    password properties.getProperty("leiainc.jfrog.password", "")
+                }
+            }
+        }
     }
 }
