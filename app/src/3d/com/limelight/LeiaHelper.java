@@ -36,7 +36,7 @@ public class LeiaHelper {
 		try {
 			LeiaSDK.InitArgs initArgs = new LeiaSDK.InitArgs();
 			initArgs.platform.app = application;
-			initArgs.platform.logLevel = LogLevel.Trace;
+			initArgs.platform.logLevel = LogLevel.Default;
 			LeiaSDK leiaSDK = LeiaSDK.createSDK(initArgs);
 
 			leiaSDK.startFaceTracking(false);
