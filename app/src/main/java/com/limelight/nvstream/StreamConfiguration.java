@@ -158,8 +158,8 @@ public class StreamConfiguration {
     private StreamConfiguration() {
         // Set default attributes
         this.app = new NvApp("Steam");
-        this.width = 1280;
-        this.height = 720;
+        this.width = 2560;
+        this.height = 1600;
         this.refreshRate = 60;
         this.launchRefreshRate = 60;
         this.bitrate = 10000;

@@ -50,7 +50,7 @@ public class PreferenceConfiguration {
     private static final String REDUCE_REFRESH_RATE_PREF_STRING = "checkbox_reduce_refresh_rate";
     private static final String FULL_RANGE_PREF_STRING = "checkbox_full_range";
 
-    static final String DEFAULT_RESOLUTION = "1280x720";
+    static final String DEFAULT_RESOLUTION = "2560x1600";
     static final String DEFAULT_FPS = "60";
     private static final boolean DEFAULT_STRETCH = false;
     private static final boolean DEFAULT_SOPS = true;
